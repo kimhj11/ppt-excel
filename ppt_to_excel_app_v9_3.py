@@ -7,7 +7,7 @@ import io
 import os
 
 st.set_page_config(page_title="문항 누적 저장기", layout="wide")
-st.title("✍️온라인 평가문항 양식으로 자동 변환하기")
+st.title("✍️ 온라인 평가문항 양식으로 자동 변환하기")
 
 uploaded_files = st.file_uploader("📤 PPT 파일 업로드 (.pptx만 가능)", type=["pptx"], accept_multiple_files=True)
 base_excel = st.file_uploader("📂 기존 결과 엑셀 업로드 (선택)", type=["xlsx"])
