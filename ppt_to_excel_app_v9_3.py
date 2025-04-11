@@ -64,9 +64,10 @@ if uploaded_files:
                         r"(?:\n(●\s*)?(?P<보기>.*?))?"
                         r"\n정답[:：]?\s*(?P<정답>[OX①②③④])"
                         r"\n난이도[:：]?\s*(?P<난이도>.*?)"
-                        r"\n해설[:：]?\s*(?P<해설>.*?)(?=\n\d+\.|\Z)",
+                        r"\n해[설석][:：]?\s*(?P<해설>.*?)(?=\n\d+\.|\Z)",
                         re.DOTALL
                     )
+
 
                     for match in pattern.finditer(user_text):
                         문제 = match.group("문제").strip()
