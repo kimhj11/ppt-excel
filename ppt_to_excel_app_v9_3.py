@@ -7,13 +7,14 @@ import io
 import os
 
 st.set_page_config(page_title="문항 누적 저장기", layout="wide")
-st.title("✍️온라인 평가문항 자동 변환하기")
+st.title("📘 문항 자동 변환기 (v9.4 - 추출 실패 슬라이드 알림)")
 
 uploaded_files = st.file_uploader("📤 PPT 파일 업로드 (.pptx만 가능)", type=["pptx"], accept_multiple_files=True)
 base_excel = st.file_uploader("📂 기존 결과 엑셀 업로드 (선택)", type=["xlsx"])
 set_number = st.number_input("📦 세트 번호", min_value=1, value=1, step=1)
 
 data_rows = []
+failed_slides = {}  # 추출 실패 슬라이드 기록용
 
 if uploaded_files:
     st.info("각 파일마다 추출할 슬라이드 번호를 입력하세요 (예: 3,5,7 또는 전체).")
@@ -68,8 +69,10 @@ if uploaded_files:
                         re.DOTALL
                     )
 
+                    match_count = 0
 
                     for match in pattern.finditer(user_text):
+                        match_count += 1
                         문제 = match.group("문제").strip()
                         정답 = match.group("정답").strip()
                         난이도 = match.group("난이도").strip()
@@ -104,6 +107,9 @@ if uploaded_files:
                             "차시": lesson_name
                         })
 
+                    if match_count == 0:
+                        failed_slides.setdefault(filename, []).append(idx + 1)
+
 if data_rows:
     df_new = pd.DataFrame(data_rows)
     df_new.insert(0, "번호", range(1, len(df_new) + 1))
@@ -127,5 +133,10 @@ if data_rows:
         file_name="온라인_평가문항_최종결과.xlsx",
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
+
+    if failed_slides:
+        st.warning("⚠️ 추출에 실패한 슬라이드가 있습니다:")
+        for fname, slide_nums in failed_slides.items():
+            st.markdown(f"- **{fname}**: 슬라이드 {', '.join(map(str, slide_nums))}")
 else:
     st.info("📤 PPT 파일을 업로드하고 슬라이드를 지정하면 문항이 추출됩니다.")
