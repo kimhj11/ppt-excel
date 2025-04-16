@@ -7,7 +7,7 @@ import io
 import os
 
 st.set_page_config(page_title="문항 변환기", layout="wide")
-st.title("📘 문항 자동 변환기 (v9.7 - 텍스트 입력 미리보기/다운로드 추가)")
+st.title("✍️ 온라인 평가문항 자동 변환하기")
 
 uploaded_files = st.file_uploader("📤 PPT 파일 업로드 (.pptx만 가능)", type=["pptx"], accept_multiple_files=True)
 base_excel = st.file_uploader("📂 기존 결과 엑셀 업로드 (선택)", type=["xlsx"])
