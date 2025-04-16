@@ -164,6 +164,26 @@ if btn and manual_text.strip():
         })
 
     if manual_rows:
+
+        df_manual = pd.DataFrame(manual_rows)
+        df_manual.insert(0, "번호", range(1, len(df_manual) + 1))
+
+        st.subheader("📄 텍스트 입력 결과 미리보기")
+        st.dataframe(df_manual)
+
+        output_manual = io.BytesIO()
+        with pd.ExcelWriter(output_manual, engine="xlsxwriter") as writer:
+            df_manual.to_excel(writer, index=False, sheet_name="문항")
+
+        st.download_button(
+            label="📥 수동 입력 엑셀 다운로드",
+            data=output_manual.getvalue(),
+            file_name="텍스트입력_문항_결과.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+    else:
+        st.warning("❗ 문항이 추출되지 않았습니다. 번호, 정답, 해설 등의 형식을 확인해주세요.")
+
         df_manual = pd.DataFrame(manual_rows)
         df_manual.insert(0, "번호", range(1, len(df_manual) + 1))
 
