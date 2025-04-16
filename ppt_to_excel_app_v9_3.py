@@ -41,7 +41,7 @@ if uploaded_files:
 
             lesson_match = re.search(r"(\d+)차시", filename)
             lesson_name = lesson_match.group(1) if lesson_match else "1"
-
+            
             for idx in target_slides:
                 if idx >= len(prs.slides): continue
                 slide = prs.slides[idx]
@@ -124,7 +124,7 @@ if btn and manual_text.strip():
         r"(?:\n(●\s*)?(?P<보기>.*?))?"
         r"\n정답[:：]?\s*(?P<정답>[OX①②③④])"
         r"\n난이도[:：]?\s*(?P<난이도>.*?)"
-        r"\n해[설석][:：]?\s*(?P<해설>.*?)(?=\n\d+\.|\Z)",
+        r"\n해[설석][:：]?\s*(?P<해설>.*?)(?=\n\d+\.|\s*\Z)",
         re.DOTALL
     )
 
